@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Movie = require('../models/movies')
+const movieCtrl = require('../controllers/movies')
 
 // Getting all movies
 router.get('/', async (req, res) => {
@@ -18,24 +19,7 @@ router.get('/:id', (req, res) => {
 })
 
 // Creating one movie
-router.post('/', async (req, res) => {
-    const movie = new Movie({
-        title: req.body.title,
-        original_language: req.body.original_language,
-        genres: req.body.genres,
-        overview: req.body.overview,
-        poster_url: req.body.poster_url,
-        actors: req.body.actors,
-        keywords: req.body.keywords,
-        folder_name: req.body.folder_name
-    })
-    try {
-        const newMovie = await movie.save()
-        res.status(201).json(newMovie)
-    } catch (err) {
-        res.status(400).json({ message: err.message })
-    }
-})
+router.post('/', movieCtrl.createMovie)
 
 // Updating one movie
 router.patch('/:id', (req, res) => {
